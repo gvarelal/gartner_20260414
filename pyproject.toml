@@ -1,0 +1,14 @@
+[project]
+name = "gartner-loan-processing"
+version = "0.1.0"
+description = "Synthetic loan data generation for Gartner demo"
+requires-python = ">=3.13"
+dependencies = [
+    "faker>=40.5.1",
+    "playwright>=1.58.0",
+    "google-cloud-storage>=3.9.0",
+    "pyOpenSSL",
+]
+
+[[tool.uv.index]]
+url = "https://pypi.org/simple"
