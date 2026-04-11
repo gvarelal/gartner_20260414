@@ -1,4 +1,4 @@
-Loan ID,Name,Email,Disposition,Risk Tier,DTI,LTV
+Application ID,Name,Email,Disposition,Risk Tier,DTI,LTV
 L_0001,Andrew Jason,andrew.jason@example.com,NEEDS HUMAN REVIEW,Tier 2 (Medium Risk),37.8%,86.9%
 L_0002,Cristian Santos,amy.robinson@gmail.com,APPROVED,Tier 1 (Low Risk),24.6%,50.8%
 L_0003,Gregory Baker,gregory.baker@gmail.com,REJECTED,Tier 3 (High Risk),49.8%,92.1%

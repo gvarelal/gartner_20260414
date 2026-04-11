@@ -220,7 +220,7 @@ HTML_TEMPLATE = """
         <div class="section-title">File Identification</div>
         <table>
             <tr>
-                <th>Loan Application ID</th>
+                <th>Application ID</th>
                 <td class="value-col">{loan_id}</td>
                 <td class="evidence-col">System Generated</td>
             </tr>
@@ -503,7 +503,7 @@ async def main():
         
         with open(log_path, "a") as log_file:
             if write_headers:
-                log_file.write("| Loan ID | Name | Email | Disposition | Risk Tier | DTI | LTV |\n")
+                log_file.write("| Application ID | Name | Email | Disposition | Risk Tier | DTI | LTV |\n")
                 log_file.write("| --- | --- | --- | --- | --- | --- | --- |\n")
                 
             # Find the highest existing loan ID to make it evergrowing
