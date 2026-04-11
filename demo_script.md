@@ -1,17 +1,3 @@
-Answering questions:
-
-1. The agent should use tools to read the CSV
-
-2. Attaching the script below, this step is the last one.
-
-3. yes they will have permissions
-
-4. It should
-
-
-
-```
-
 **Gemini Enterprise Demo Script** 
 
 
