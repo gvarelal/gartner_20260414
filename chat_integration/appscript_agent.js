@@ -1,15 +1,24 @@
-function queryReasoningEngine(queryText) {
+function queryReasoningEngine(queryText, sessionId) {
   const PROJECT_ID = "demo4events10";
   const LOCATION = "us-central1";
   const REASONING_ENGINE_ID = "5328541761214087168";
   
-  var url = "https://" + LOCATION + "-aiplatform.googleapis.com/v1/projects/" + PROJECT_ID + "/locations/" + LOCATION + "/reasoningEngines/" + REASONING_ENGINE_ID + ":query";
+  // ADK agents require the streamQuery endpoint
+  var url = "https://" + LOCATION + "-aiplatform.googleapis.com/v1/projects/" + PROJECT_ID + "/locations/" + LOCATION + "/reasoningEngines/" + REASONING_ENGINE_ID + ":streamQuery?alt=sse";
   
   var payload = {
+    "class_method": "async_stream_query",
     "input": {
-      "input": queryText
+      "message": queryText,
+      "user_id": "gartner_demo_user" // Mandatory for ADK agents
     }
   };
+  
+  if (sessionId) {
+    payload.input.session_id = sessionId;
+  }
+  
+  console.log("Sending payload to ADK agent:", JSON.stringify(payload));
   
   var options = {
     "method": "post",
@@ -24,15 +33,69 @@ function queryReasoningEngine(queryText) {
   var response = UrlFetchApp.fetch(url, options);
   var responseText = response.getContentText();
   console.log("Agent response status: " + response.getResponseCode());
-  console.log("Agent response text: " + responseText);
+  console.log("Raw response text: " + responseText);
   
   if (response.getResponseCode() == 200) {
-    var result = JSON.parse(responseText);
-    // Adjust this path based on the actual output structure of your agent
-    return result.output || responseText; 
+    var lines = responseText.split("\n");
+    var fullResponse = "";
+    
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line) continue;
+      
+      try {
+        var dataObj = JSON.parse(line);
+        if (dataObj.content && dataObj.content.parts && dataObj.content.parts[0] && dataObj.content.parts[0].text) {
+          fullResponse += dataObj.content.parts[0].text;
+        }
+      } catch (e) {
+        // Line might not be valid JSON, ignore
+      }
+    }
+    
+    console.log("Full parsed response from stream: " + fullResponse);
+    return fullResponse || "No text content returned from stream.";
   } else {
     return "Error calling agent: " + responseText;
   }
+}
+
+function createSession() {
+  const PROJECT_ID = "demo4events10";
+  const LOCATION = "us-central1";
+  const REASONING_ENGINE_ID = "5328541761214087168";
+  
+  var url = "https://" + LOCATION + "-aiplatform.googleapis.com/v1/projects/" + PROJECT_ID + "/locations/" + LOCATION + "/reasoningEngines/" + REASONING_ENGINE_ID + ":query";
+  
+  var payload = {
+    "class_method": "create_session",
+    "input": {
+      "user_id": "gartner_demo_user"
+    }
+  };
+  
+  var options = {
+    "method": "post",
+    "contentType": "application/json",
+    "payload": JSON.stringify(payload),
+    "headers": {
+      "Authorization": "Bearer " + ScriptApp.getOAuthToken()
+    },
+    "muteHttpExceptions": true
+  };
+  
+  var response = UrlFetchApp.fetch(url, options);
+  console.log("Create session status: " + response.getResponseCode());
+  console.log("Create session text: " + response.getContentText());
+  
+  if (response.getResponseCode() == 200) {
+    var result = JSON.parse(response.getContentText());
+    if (result.output && result.output.id) {
+      return result.output.id;
+    }
+    return result.session_id || null;
+  }
+  return null;
 }
 
 function onMessage(event) {
@@ -60,8 +123,23 @@ function onMessage(event) {
   }
   
   // Call the agent instead of hardcoded branches
+  console.log("Checking session...");
+  var userProperties = PropertiesService.getUserProperties();
+  var sessionId = userProperties.getProperty('sessionId_v2');
+  
+  if (!sessionId) {
+    console.log("No session found, creating new session...");
+    sessionId = createSession();
+    if (sessionId) {
+      userProperties.setProperty('sessionId_v2', sessionId);
+      console.log("New session saved: " + sessionId);
+    }
+  } else {
+    console.log("Using existing session: " + sessionId);
+  }
+  
   console.log("Querying agent...");
-  var responseText = queryReasoningEngine(text);
+  var responseText = queryReasoningEngine(text, sessionId);
   
   // Real agent thinking, no need to simulate delay
   
