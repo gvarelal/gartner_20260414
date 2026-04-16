@@ -37,7 +37,8 @@ function queryReasoningEngine(queryText, sessionId) {
   
   if (response.getResponseCode() == 200) {
     var lines = responseText.split("\n");
-    var fullResponse = "";
+    var thinkingResponse = "";
+    var finalResponse = "";
     
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i].trim();
@@ -46,15 +47,34 @@ function queryReasoningEngine(queryText, sessionId) {
       try {
         var dataObj = JSON.parse(line);
         if (dataObj.content && dataObj.content.parts && dataObj.content.parts[0] && dataObj.content.parts[0].text) {
-          fullResponse += dataObj.content.parts[0].text;
+          var text = dataObj.content.parts[0].text;
+          
+          if (dataObj.content.parts[0].thought === true) {
+            thinkingResponse += "* " + text.trim() + "\n";
+          } else {
+            finalResponse += text;
+          }
         }
       } catch (e) {
         // Line might not be valid JSON, ignore
       }
     }
     
-    console.log("Full parsed response from stream: " + fullResponse);
-    return fullResponse || "No text content returned from stream.";
+    var formattedFinalResponse = convertTableToText(finalResponse);
+    
+    var combinedResponse = "";
+    if (thinkingResponse) {
+      combinedResponse += "*Thinking:*\n" + thinkingResponse + "\n";
+    }
+    if (formattedFinalResponse) {
+      combinedResponse += "*Final response:*\n" + formattedFinalResponse;
+    }
+    
+    // Convert markdown links [Text](URL) to Google Chat format <URL|Text>
+    combinedResponse = combinedResponse.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<$2|$1>');
+    
+    console.log("Full parsed response from stream: " + combinedResponse);
+    return combinedResponse || "No text content returned from stream.";
   } else {
     return "Error calling agent: " + responseText;
   }
@@ -96,6 +116,55 @@ function createSession() {
     return result.session_id || null;
   }
   return null;
+}
+
+function convertTableToText(text) {
+  var lines = text.split("\n");
+  var result = "";
+  var headers = [];
+  var inTable = false;
+  
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (line.startsWith("|")) {
+      if (line.includes("---|")) continue; // Skip separator
+      
+      var parts = line.split("|").map(p => p.trim()).filter(p => p !== "");
+      
+      if (parts.length === 2) {
+        // Handle vertical key-value table (2 columns)
+        var label = parts[0].replace(/\*\*/g, ""); // Remove bold markdown
+        var value = parts[1];
+        result += "*" + label + ":* " + value + "\n";
+      } else {
+        // Handle horizontal multi-column table
+        if (!inTable) {
+          headers = parts;
+          inTable = true;
+          result += "*Applications Table:*\n";
+        } else {
+          var rowText = "";
+          for (var j = 0; j < parts.length; j++) {
+            var header = headers[j] || "Col " + (j+1);
+            header = header.replace(/\*\*/g, "");
+            rowText += "*" + header + ":* " + parts[j] + " | ";
+          }
+          if (rowText.endsWith(" | ")) {
+            rowText = rowText.substring(0, rowText.length - 3);
+          }
+          result += rowText + "\n";
+        }
+      }
+    } else {
+      if (inTable) {
+        result += "\n"; // Add newline after table
+        inTable = false;
+        headers = [];
+      }
+      result += lines[i] + "\n";
+    }
+  }
+  return result;
 }
 
 function onMessage(event) {
@@ -147,6 +216,7 @@ function onMessage(event) {
   if (spaceName) {
     try {
       console.log("Attempting to push message to space...");
+      
       Chat.Spaces.Messages.create({
         "text": responseText
       }, spaceName);
