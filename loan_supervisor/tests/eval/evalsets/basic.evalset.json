@@ -1,0 +1,112 @@
+{
+  "eval_set_id": "loan_supervisor_eval",
+  "name": "Loan Supervisor Capability Evaluation",
+  "description": "Validates that the orchestrator correctly routes and executes loan processing, pending queues, and operational summaries.",
+  "eval_cases": [
+    {
+      "eval_id": "process_loan_l_0001",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "Process mortgage application L_0001"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "Document_Retriever",
+                "args": {
+                  "request": "L_0001"
+                }
+              },
+              {
+                "name": "Document_Validator",
+                "args": {
+                  "request": "L_0001"
+                }
+              },
+              {
+                "name": "Credit_Checker",
+                "args": {
+                  "request": "L_0001"
+                }
+              },
+              {
+                "name": "Risk_Assessor",
+                "args": {
+                  "request": "L_0001"
+                }
+              },
+              {
+                "name": "Summarization_Agent",
+                "args": {
+                  "request": "L_0001"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "app",
+        "user_id": "eval_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "list_unprocessed",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "Give the latest 10 unprocessed mortgage loan applications"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "get_unprocessed_applications"
+              }
+            ]
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "app",
+        "user_id": "eval_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "batch_summary",
+      "conversation": [
+        {
+          "user_content": {
+            "parts": [
+              {
+                "text": "Summarize the loan applications processed in the last batch"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "summarize_batch_processing"
+              }
+            ]
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "app",
+        "user_id": "eval_user",
+        "state": {}
+      }
+    }
+  ]
+}

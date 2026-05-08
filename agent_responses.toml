@@ -1,0 +1,797 @@
+name = "loan-supervisor-simulation"
+version = "20260411.1"
+description = "Configuration for the Loan Supervisor Agent simulation following the Gartner demo script."
+
+############################################################
+# loan_supervisor_l0001 (Andrew Jason)
+############################################################
+
+[[agents]]
+name = "loan_supervisor_l0001"
+description = "Simulates processing Loan Application L_0001 with specific issues requiring human review."
+type = "text"
+intent = "The user wants to process loan application L_0001."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0001",
+    "process l_0001",
+    "process l0001",
+    "process l001",
+    "Can you process L_0001?",
+    "Can you process l_0001?",
+    "Can you process l0001?",
+    "Can you process l001?",
+]
+
+fallback_response = """
+I encountered an issue processing application L_0001. It has been flagged for human review due to document inconsistencies.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0001 |
+|---|---|
+| **Name** | Andrew Jason [Source: Loan Application] |
+| **Email** | andrew.jason@example.com [Source: Loan Application] |
+| **Phone** | +1-555-010-9988 [Source: Loan Application] |
+| **SSN** | 000-00-0000 [Source: Loan Application] |
+| **Income** | $125,000 [Source: Loan Application] |
+| **Loan Amount** | $75,000 [Source: Loan Application] |
+| **Credit Score** | 680 [Source: Credit Bureau] |
+| **Risk Score** | 8 [Info: Risk Score is calculated based on the loan amount, income, and credit score] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - Missing preferred documents: Bank Statement, Tax Statements.<br>- Name mismatch: "Andrew Jason" (Loan Application, Pay Stub) vs "Andrew Jason Sample" (Driver's License). Driver's License also has a "SAMPLE" watermark.<br>- SSN "000-00-0000" in Loan Application is a placeholder and requires secondary verification.<br>- Income discrepancy: $125,000 (Loan Application) vs $140,200 YTD (Pay Stub).<br>- Pay Stub has "Fictional Signature line". |
+| **Recommended Next Step** | - Send this application for deep review.<br>- Reach out to the user to verify SSN.<br>- Request valid Driver's License and Pay Stub without fictional elements.<br>- Request Bank Statements and Tax Statements.<br>- Clarify income discrepancy with the applicant.<br>- Verify applicant's identity due to document inconsistencies. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+############################################################
+# loan_supervisor_l0002 (Cristian Santos - Approved)
+############################################################
+
+[[agents]]
+name = "loan_supervisor_l0002"
+description = "Simulates processing low-risk loan application L_0002."
+type = "text"
+intent = "The user wants to process loan application L_0002."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0002",
+    "process l_0002",
+    "process l0002",
+    "process l002",
+    "Can you process L_0002?",
+]
+
+fallback_response = """
+Application processed successfully. Decision: APPROVED.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0002 |
+|---|---|
+| **Name** | Cristian Santos [Source: Loan Application] |
+| **Email** | amy.robinson@gmail.com [Source: Loan Application] |
+| **Income** | $150,000 [Source: Loan Application] |
+| **Loan Amount** | $50,000 [Source: Loan Application] |
+| **Credit Score** | 780 [Source: Credit Bureau] |
+| **Risk Score** | 2 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: PII data matches 100% across all submitted documents.<br>- [System Check]: Income verified via payroll API ($150,000 vs $149,800 reported).<br>- [System Check]: FICO score 780 meets prime tier criteria. |
+| **Recommended Next Step** | - [LOS]: Push to automated closing queue.<br>- [LOS]: Generate closing disclosure (CD) and send to applicant.<br>- [LOS]: Wire funds to escrow account upon e-signature confirmation. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_l0003"
+description = "Simulates processing high-risk loan application L_0003."
+type = "text"
+intent = "The user wants to process loan application L_0003."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0003",
+    "process l_0003",
+    "process l0003",
+    "process l003",
+    "Can you process L_0003?",
+]
+
+fallback_response = """
+Application processed. Decision: REJECTED due to high risk metrics.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0003 |
+|---|---|
+| **Name** | Gregory Baker [Source: Loan Application] |
+| **Email** | gregory.baker@gmail.com [Source: Loan Application] |
+| **Income** | $45,000 [Source: Loan Application] |
+| **Loan Amount** | $120,000 [Source: Loan Application] |
+| **Credit Score** | 540 [Source: Credit Bureau] |
+| **Risk Score** | 10 [Info: High Risk] |
+| **Decision** | -+ REJECTED +- [Info: Risk Score between 9 and 10: REJECTED] |
+| **Warnings** | - [Failure]: Credit score 540 is below the minimum required 620 for this product.<br>- [Failure]: Calculated DTI is 49.8%, exceeding the maximum allowed 45%.<br>- [Failure]: Active tax lien found in public records search. |
+| **Recommended Next Step** | - [LOS]: Generate FCRA-compliant Adverse Action notice.<br>- [LOS]: Provide applicant with credit score disclosure and factors.<br>- [LOS]: Close file in system and retain for mandatory compliance period. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_l0004"
+description = "Simulates processing loan application L_0004 requiring human review."
+type = "text"
+intent = "The user wants to process loan application L_0004."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0004",
+    "process l_0004",
+    "process l0004",
+    "process l004",
+    "Can you process L_0004?",
+]
+
+fallback_response = """
+This application has borderline metrics and has been routed for human review.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0004 |
+|---|---|
+| **Name** | Patricia Galloway [Source: Loan Application] |
+| **Email** | patricia.galloway@yahoo.com [Source: Loan Application] |
+| **Income** | $85,000 [Source: Loan Application] |
+| **Loan Amount** | $90,000 [Source: Loan Application] |
+| **Credit Score** | 650 [Source: Credit Bureau] |
+| **Risk Score** | 6 [Info: Medium Risk] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - [Review Needed]: Income reported as self-employed; requires manual verification of 1040 Schedule C.<br>- [Review Needed]: Debt-to-Income ratio is at 42.5%, approaching the system threshold.<br>- [Review Needed]: Credit report shows a recent dispute on a primary credit card account. |
+| **Recommended Next Step** | - [LOS]: Assign to Senior Underwriter specializing in self-employment.<br>- [LOS]: Request last 24 months of business bank statements for cash flow analysis.<br>- [LOS]: Verify business registration status via Secretary of State portal. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_l0005"
+description = "Simulates processing low-risk loan application L_0005."
+type = "text"
+intent = "The user wants to process loan application L_0005."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0005",
+    "process l_0005",
+    "process l0005",
+    "process l005",
+    "Can you process L_0005?",
+]
+
+fallback_response = """
+Application processed successfully. Decision: APPROVED.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0005 |
+|---|---|
+| **Name** | Carolyn Daniel [Source: Loan Application] |
+| **Email** | carolyn.daniel@outlook.com [Source: Loan Application] |
+| **Income** | $160,000 [Source: Loan Application] |
+| **Loan Amount** | $40,000 [Source: Loan Application] |
+| **Credit Score** | 790 [Source: Credit Bureau] |
+| **Risk Score** | 1 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: 10+ years of clean credit history verified with zero delinquencies.<br>- [System Check]: Employment confirmed directly with employer HR via automated API. |
+| **Recommended Next Step** | - [LOS]: Fast-track to document generation module.<br>- [LOS]: Send digital welcome package and loan terms to applicant. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_l0007"
+description = "Simulates processing low-risk loan application L_0007."
+type = "text"
+intent = "The user wants to process loan application L_0007."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0007",
+    "process l_0007",
+    "process l0007",
+    "process l007",
+    "Can you process L_0007?",
+]
+
+fallback_response = """
+Application processed successfully. Decision: APPROVED.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0007 |
+|---|---|
+| **Name** | Peter Callahan Jr. [Source: Loan Application] |
+| **Email** | peter.callahan.jr.@outlook.com [Source: Loan Application] |
+| **Income** | $145,000 [Source: Loan Application] |
+| **Loan Amount** | $55,000 [Source: Loan Application] |
+| **Credit Score** | 760 [Source: Credit Bureau] |
+| **Risk Score** | 2 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: Liquid reserves exceed minimum requirements by 150%.<br>- [System Check]: Low LTV ratio (35%) provides strong collateral position. |
+| **Recommended Next Step** | - [LOS]: Approve loan application and queue for closing.<br>- [LOS]: Notify assigned loan officer of green-light status.<br>- [LOS]: Generate automated closing document package. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_l0008"
+description = "Simulates processing low-risk loan application L_0008."
+type = "text"
+intent = "The user wants to process loan application L_0008."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0008",
+    "process l_0008",
+    "process l0008",
+    "process l008",
+    "Can you process L_0008?",
+]
+
+fallback_response = """
+Application processed successfully. Decision: APPROVED.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0008 |
+|---|---|
+| **Name** | Kimberly Adams [Source: Loan Application] |
+| **Email** | kimberly.adams@outlook.com [Source: Loan Application] |
+| **Income** | $155,000 [Source: Loan Application] |
+| **Loan Amount** | $45,000 [Source: Loan Application] |
+| **Credit Score** | 770 [Source: Credit Bureau] |
+| **Risk Score** | 2 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: Digital signatures on all documents are cryptographically valid.<br>- [System Check]: Income source matches historical tax transcripts. |
+| **Recommended Next Step** | - [LOS]: Execute automated approval workflow.<br>- [LOS]: Send e-sign link for final documents to applicant.<br>- [LOS]: Log green-light status in audit trail. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_l0009"
+description = "Simulates processing high-risk loan application L_0009."
+type = "text"
+intent = "The user wants to process loan application L_0009."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0009",
+    "process l_0009",
+    "process l0009",
+    "process l009",
+    "Can you process L_0009?",
+]
+
+fallback_response = """
+Application processed. Decision: REJECTED due to high risk metrics.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0009 |
+|---|---|
+| **Name** | Paula Moreno [Source: Loan Application] |
+| **Email** | paula.moreno@yahoo.com [Source: Loan Application] |
+| **Income** | $40,000 [Source: Loan Application] |
+| **Loan Amount** | $130,000 [Source: Loan Application] |
+| **Credit Score** | 520 [Source: Credit Bureau] |
+| **Risk Score** | 10 [Info: High Risk] |
+| **Decision** | -+ REJECTED +- [Info: Risk Score between 9 and 10: REJECTED] |
+| **Warnings** | - [Failure]: Unable to verify income (scans provided are illegible).<br>- [Failure]: Applicant has insufficient credit history (thin file).<br>- [Failure]: Requested loan amount exceeds maximum permitted for calculated income. |
+| **Recommended Next Step** | - [LOS]: Send notice of incomplete application / adverse action.<br>- [LOS]: Provide instructions on how to appeal with valid documents. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_l0010"
+description = "Simulates processing loan application L_0010 requiring human review."
+type = "text"
+intent = "The user wants to process loan application L_0010."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0010",
+    "process l_0010",
+    "process l0010",
+    "process l010",
+    "Can you process L_0010?",
+]
+
+fallback_response = """
+This application has borderline metrics and has been routed for human review.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0010 |
+|---|---|
+| **Name** | Rose Spence [Source: Loan Application] |
+| **Email** | rose.spence@outlook.com [Source: Loan Application] |
+| **Income** | $80,000 [Source: Loan Application] |
+| **Loan Amount** | $95,000 [Source: Loan Application] |
+| **Credit Score** | 660 [Source: Credit Bureau] |
+| **Risk Score** | 6 [Info: Medium Risk] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - [Review Needed]: Employment gap of 6 months in the last 2 years requires explanation.<br>- [Review Needed]: Unexplained large deposit of $50,000 in recent bank statement.<br>- [Review Needed]: Property appraisal value is borderline for requested loan amount. |
+| **Recommended Next Step** | - [LOS]: Request letter of explanation for employment gap from applicant.<br>- [LOS]: Request documentation for source of large deposit.<br>- [LOS]: Order desk review of property appraisal. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching application PDFs and uploaded W-2 forms from secure storage.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Checking for presence of all mandatory documents against the checklist.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Querying external credit bureaus for the applicant's FICO score.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Calculating risk score based on debt-to-income and loan-to-value ratios.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+[[agents]]
+name = "loan_supervisor_fallback"
+description = "Handles all other loan applications, defaulting to Human Review as per simulation rules."
+type = "text"
+intent = "This intent is triggered when the user asks to process a loan application that is not explicitly defined in the other specific agent blocks. The explicitly defined IDs are L_0001, L_0002, L_0003, L_0004, L_0005, L_0007, L_0008, L_0009, and L_0010. If the user asks for any other ID (e.g., L_0006 or a random number), this fallback block should be used."
+final_response_verbatim = true
+
+triggers = [
+    "Process application L_0006",
+    "process l_7286",
+    "process l_5039",
+    "Can you process L_9372?",
+    "Process application",
+    "Can you process loan",
+]
+
+fallback_response = """
+This application has borderline metrics and has been routed for human review.
+"""
+
+[agents.final_response]
+text = """
+| Loan Application ID | L_0006 |
+|---|---|
+| **Name** | Tommy Walter [Source: Loan Application] |
+| **Email** | tommy.walter@gmail.com [Source: Loan Application] |
+| **Income** | $85,000 [Source: Loan Application] |
+| **Loan Amount** | $90,000 [Source: Loan Application] |
+| **Credit Score** | 650 [Source: Credit Bureau] |
+| **Risk Score** | 6 [Info: Medium Risk] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - [Review Needed]: Unclassified application profile requiring standard manual triage.<br>- [Review Needed]: Address verification returned a partial match.<br>- [Review Needed]: Income documentation provided is in a non-standard format. |
+| **Recommended Next Step** | - [LOS]: Triage to manual review queue for general underwriting.<br>- [LOS]: Perform secondary address verification via postal database.<br>- [LOS]: Request standard W-2 or Tax Return forms. |
+
+"""
+sleep_seconds = 10 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Calling Docs Retriever Agent:
+Fetching standard document set for unclassified loan ID.
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Docs Validator Agent:
+Running baseline compliance checks on application payload.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Credit Checker Agent:
+Retrieving default credit score telemetry.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calling Risk Assessor Agent:
+Applying conservative risk model and routing for human review.
+"""
+sleep_seconds = 5 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+############################################################
+# loan_supervisor_unprocessed (List Unprocessed Applications)
+############################################################
+
+[[agents]]
+name = "loan_supervisor_unprocessed"
+description = "Lists the 10 latest unprocessed mortgage loan applications."
+type = "text"
+intent = "The user wants to see the list of unprocessed mortgage loan applications."
+final_response_verbatim = true
+
+triggers = [
+    "Give me the latest 10 unprocessed mortgage loan applications",
+    "list unprocessed applications",
+    "show unprocessed loans",
+    "latest unprocessed applications",
+    "Give me the list of unprocessed applications",
+]
+
+fallback_response = """
+Here are the unprocessed applications: L_0001 through L_0010.
+"""
+
+[agents.final_response]
+text = """
+Of course. Here are 10 unprocessed mortgage loan applications.
+
+| Loan ID | DTI | LTV | Email |
+|---|---|---|---|
+| L_0001 | 37.8% | 86.9% | an****@gm**.com |
+| L_0002 | 24.6% | 50.8% | am****@gm**.com |
+| L_0003 | 49.8% | 92.1% | gr****@gm**.com |
+| L_0004 | 42.5% | 86.8% | pa****@ya**.com |
+| L_0005 | 26.0% | 70.4% | ca****@ou**.com |
+| L_0006 | 26.1% | 78.6% | to****@gm**.com |
+| L_0007 | 27.1% | 65.5% | pe****@ou**.com |
+| L_0008 | 28.0% | 74.4% | ki****@ou**.com |
+| L_0009 | 54.2% | 93.3% | pa****@ya**.com |
+| L_0010 | 38.1% | 83.0% | ro****@ou**.com |
+"""
+sleep_seconds = 1 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Accessing pending application queue...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Filtering for unprocessed status...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Sorting by application date (latest last)...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Formatting output table...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+############################################################
+# loan_supervisor_summary (Summarize Processed Applications)
+############################################################
+
+[[agents]]
+name = "loan_supervisor_summary"
+description = "Summarizes the loan applications processed in the last batch."
+type = "text"
+intent = "The user wants to summarize the loan applications processed in the last batch."
+final_response_verbatim = true
+
+triggers = [
+    "Summarize the loan applications processed in the last batch",
+    "Summarize last batch",
+    "Show batch summary",
+    "Summarize applications",
+    "@LoanSupervisor Summarize the loan applications processed in the last batch",
+]
+
+fallback_response = """
+Here is the summary of the last batch: 1,108 applications processed. 452 Approved, 486 Needs Review, 170 Rejected.
+"""
+
+[agents.final_response]
+text = """
+Of course. Here is a detailed summary of the 1,108 mortgage applications that were processed in the last cycle.
+
+###  executive-summary Executive Summary
+The automated loan processing agent has completed its review of the most recent batch of mortgage applications. A total of **1,108 applications** were processed, with **40.8%** being automatically approved and **15.3%** automatically rejected. A significant portion, **43.9%**, have been flagged for manual human review due to risk scores falling within a moderate range or because of data inconsistencies that require further verification.
+
+---
+### status-breakdown Application Status Breakdown
+The following table details the final disposition of all applications in the last batch.
+
+| Status | Count | Percentage |
+|---|---|---|
+| ✅ Approved | 452 | 40.8% |
+| ⚠️ Needs Human Review | 486 | 43.9% |
+| ❌ Rejected | 170 | 15.3% |
+| **Total** | **1,108** | **100%** |
+
+---
+### key-insights Key Insights & Trends
+*   **High Review Volume:** The largest single category of outcomes was "Needs Human Review," suggesting that a large number of applicants have risk profiles that are neither clearly favorable nor unfavorable. This highlights the importance of the human review stage in our process.
+*   **Strong Approval Rate:** A substantial number of applications were approved automatically, indicating a healthy pipeline of qualified applicants.
+*   **Rejection Analysis:** The rejected applications represent a smaller but significant segment. A deeper dive into the reasons for rejection could reveal opportunities to refine our initial screening criteria.
+
+---
+### download-reports Download Full Reports
+For a more granular analysis, you can download the complete reports.
+
+*   [Download the Excel Summary](https://storage.cloud.google.com/gartner_loan_processing_summary/generation_summary.xlsx)
+*   [View the Full HTML Report](https://storage.cloud.google.com/gartner_loan_processing_summary/loan_processing_report.html)
+
+Is there a specific part of this summary you would like to explore in more detail?
+"""
+sleep_seconds = 1 # Configures how long the final response delayed, meaning, it configures how long the last sleeping text stays on screen before the final response appears
+
+[[agents.thinking]]
+text = """
+Accessing batch processing logs for the last cycle...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Aggregating disposition metrics (Approved, Rejected, Needs Review)...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Calculating percentages and identifying key trends...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)
+
+[[agents.thinking]]
+text = """
+Generating full report download links...
+"""
+sleep_seconds = 1 # Configures how long this text is delayed, meaning, it configures how long the previous text stays on screen before this step starts (Step N sleep controls Step N-1 visibility)

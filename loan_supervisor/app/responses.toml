@@ -1,0 +1,170 @@
+[responses]
+L_0001 = """| Loan Application ID | L_0001 |
+|---|---|
+| **Name** | Andrew Jason [Source: Loan Application] |
+| **Email** | andrew.jason@example.com [Source: Loan Application] |
+| **Phone** | +1-555-010-9988 [Source: Loan Application] |
+| **SSN** | 000-00-0000 [Source: Loan Application] |
+| **Income** | $125,000 [Source: Loan Application] |
+| **Loan Amount** | $75,000 [Source: Loan Application] |
+| **Credit Score** | 680 [Source: Credit Bureau] |
+| **Risk Score** | 8 [Info: Risk Score is calculated based on the loan amount, income, and credit score] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - Missing preferred documents: Bank Statement, Tax Statements.<br>- Name mismatch: \"Andrew Jason\" (Loan Application, Pay Stub) vs \"Andrew Jason Sample\" (Driver's License). Driver's License also has a \"SAMPLE\" watermark.<br>- SSN \"000-00-0000\" in Loan Application is a placeholder and requires secondary verification.<br>- Income discrepancy: $125,000 (Loan Application) vs $140,200 YTD (Pay Stub).<br>- Pay Stub has \"Fictional Signature line\". |
+| **Recommended Next Step** | - Send this application for deep review.<br>- Reach out to the user to verify SSN.<br>- Request valid Driver's License and Pay Stub without fictional elements.<br>- Request Bank Statements and Tax Statements.<br>- Clarify income discrepancy with the applicant.<br>- Verify applicant's identity due to document inconsistencies. |"""
+
+L_0002 = """| Loan Application ID | L_0002 |
+|---|---|
+| **Name** | Cristian Santos [Source: Loan Application] |
+| **Email** | amy.robinson@gmail.com [Source: Loan Application] |
+| **Income** | $150,000 [Source: Loan Application] |
+| **Loan Amount** | $50,000 [Source: Loan Application] |
+| **Credit Score** | 780 [Source: Credit Bureau] |
+| **Risk Score** | 2 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: PII data matches 100% across all submitted documents.<br>- [System Check]: Income verified via payroll API ($150,000 vs $149,800 reported).<br>- [System Check]: FICO score 780 meets prime tier criteria. |
+| **Recommended Next Step** | - [LOS]: Push to automated closing queue.<br>- [LOS]: Generate closing disclosure (CD) and send to applicant.<br>- [LOS]: Wire funds to escrow account upon e-signature confirmation. |"""
+
+L_0003 = """| Loan Application ID | L_0003 |
+|---|---|
+| **Name** | Gregory Baker [Source: Loan Application] |
+| **Email** | gregory.baker@gmail.com [Source: Loan Application] |
+| **Income** | $45,000 [Source: Loan Application] |
+| **Loan Amount** | $120,000 [Source: Loan Application] |
+| **Credit Score** | 540 [Source: Credit Bureau] |
+| **Risk Score** | 10 [Info: High Risk] |
+| **Decision** | -+ REJECTED +- [Info: Risk Score between 9 and 10: REJECTED] |
+| **Warnings** | - [Failure]: Credit score 540 is below the minimum required 620 for this product.<br>- [Failure]: Calculated DTI is 49.8%, exceeding the maximum allowed 45%.<br>- [Failure]: Active tax lien found in public records search. |
+| **Recommended Next Step** | - [LOS]: Generate FCRA-compliant Adverse Action notice.<br>- [LOS]: Provide applicant with credit score disclosure and factors.<br>- [LOS]: Close file in system and retain for mandatory compliance period. |"""
+
+L_0004 = """| Loan Application ID | L_0004 |
+|---|---|
+| **Name** | Patricia Galloway [Source: Loan Application] |
+| **Email** | patricia.galloway@yahoo.com [Source: Loan Application] |
+| **Income** | $85,000 [Source: Loan Application] |
+| **Loan Amount** | $90,000 [Source: Loan Application] |
+| **Credit Score** | 650 [Source: Credit Bureau] |
+| **Risk Score** | 6 [Info: Medium Risk] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - [Review Needed]: Income reported as self-employed; requires manual verification of 1040 Schedule C.<br>- [Review Needed]: Debt-to-Income ratio is at 42.5%, approaching the system threshold.<br>- [Review Needed]: Credit report shows a recent dispute on a primary credit card account. |
+| **Recommended Next Step** | - [LOS]: Assign to Senior Underwriter specializing in self-employment.<br>- [LOS]: Request last 24 months of business bank statements for cash flow analysis.<br>- [LOS]: Verify business registration status via Secretary of State portal. |"""
+
+L_0005 = """| Loan Application ID | L_0005 |
+|---|---|
+| **Name** | Carolyn Daniel [Source: Loan Application] |
+| **Email** | carolyn.daniel@outlook.com [Source: Loan Application] |
+| **Income** | $160,000 [Source: Loan Application] |
+| **Loan Amount** | $40,000 [Source: Loan Application] |
+| **Credit Score** | 790 [Source: Credit Bureau] |
+| **Risk Score** | 1 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: 10+ years of clean credit history verified with zero delinquencies.<br>- [System Check]: Employment confirmed directly with employer HR via automated API. |
+| **Recommended Next Step** | - [LOS]: Fast-track to document generation module.<br>- [LOS]: Send digital welcome package and loan terms to applicant. |"""
+
+L_0006 = """| Loan Application ID | L_0006 |
+|---|---|
+| **Name** | Tommy Walter [Source: Loan Application] |
+| **Email** | tommy.walter@gmail.com [Source: Loan Application] |
+| **Income** | $85,000 [Source: Loan Application] |
+| **Loan Amount** | $90,000 [Source: Loan Application] |
+| **Credit Score** | 650 [Source: Credit Bureau] |
+| **Risk Score** | 6 [Info: Medium Risk] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - [Review Needed]: Unclassified application profile requiring standard manual triage.<br>- [Review Needed]: Address verification returned a partial match.<br>- [Review Needed]: Income documentation provided is in a non-standard format. |
+| **Recommended Next Step** | - [LOS]: Triage to manual review queue for general underwriting.<br>- [LOS]: Perform secondary address verification via postal database.<br>- [LOS]: Request standard W-2 or Tax Return forms. |"""
+
+L_0007 = """| Loan Application ID | L_0007 |
+|---|---|
+| **Name** | Peter Callahan Jr. [Source: Loan Application] |
+| **Email** | peter.callahan.jr.@outlook.com [Source: Loan Application] |
+| **Income** | $145,000 [Source: Loan Application] |
+| **Loan Amount** | $55,000 [Source: Loan Application] |
+| **Credit Score** | 760 [Source: Credit Bureau] |
+| **Risk Score** | 2 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: Liquid reserves exceed minimum requirements by 150%.<br>- [System Check]: Low LTV ratio (35%) provides strong collateral position. |
+| **Recommended Next Step** | - [LOS]: Approve loan application and queue for closing.<br>- [LOS]: Notify assigned loan officer of green-light status.<br>- [LOS]: Generate automated closing document package. |"""
+
+L_0008 = """| Loan Application ID | L_0008 |
+|---|---|
+| **Name** | Kimberly Adams [Source: Loan Application] |
+| **Email** | kimberly.adams@outlook.com [Source: Loan Application] |
+| **Income** | $155,000 [Source: Loan Application] |
+| **Loan Amount** | $45,000 [Source: Loan Application] |
+| **Credit Score** | 770 [Source: Credit Bureau] |
+| **Risk Score** | 2 [Info: Low Risk] |
+| **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
+| **Warnings** | - None.<br>- [System Check]: Digital signatures on all documents are cryptographically valid.<br>- [System Check]: Income source matches historical tax transcripts. |
+| **Recommended Next Step** | - [LOS]: Execute automated approval workflow.<br>- [LOS]: Send e-sign link for final documents to applicant.<br>- [LOS]: Log green-light status in audit trail. |"""
+
+L_0009 = """| Loan Application ID | L_0009 |
+|---|---|
+| **Name** | Paula Moreno [Source: Loan Application] |
+| **Email** | paula.moreno@yahoo.com [Source: Loan Application] |
+| **Income** | $40,000 [Source: Loan Application] |
+| **Loan Amount** | $130,000 [Source: Loan Application] |
+| **Credit Score** | 520 [Source: Credit Bureau] |
+| **Risk Score** | 10 [Info: High Risk] |
+| **Decision** | -+ REJECTED +- [Info: Risk Score between 9 and 10: REJECTED] |
+| **Warnings** | - [Failure]: Unable to verify income (scans provided are illegible).<br>- [Failure]: Applicant has insufficient credit history (thin file).<br>- [Failure]: Requested loan amount exceeds maximum permitted for calculated income. |
+| **Recommended Next Step** | - [LOS]: Send notice of incomplete application / adverse action.<br>- [LOS]: Provide instructions on how to appeal with valid documents. |"""
+
+L_0010 = """| Loan Application ID | L_0010 |
+|---|---|
+| **Name** | Rose Spence [Source: Loan Application] |
+| **Email** | rose.spence@outlook.com [Source: Loan Application] |
+| **Income** | $80,000 [Source: Loan Application] |
+| **Loan Amount** | $95,000 [Source: Loan Application] |
+| **Credit Score** | 660 [Source: Credit Bureau] |
+| **Risk Score** | 6 [Info: Medium Risk] |
+| **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
+| **Warnings** | - [Review Needed]: Employment gap of 6 months in the last 2 years requires explanation.<br>- [Review Needed]: Unexplained large deposit of $50,000 in recent bank statement.<br>- [Review Needed]: Property appraisal value is borderline for requested loan amount. |
+| **Recommended Next Step** | - [LOS]: Request letter of explanation for employment gap from applicant.<br>- [LOS]: Request documentation for source of large deposit.<br>- [LOS]: Order desk review of property appraisal. |"""
+
+unprocessed = """Of course. Here are 10 unprocessed mortgage loan applications.
+
+| Loan ID | DTI | LTV | Email |
+|---|---|---|---|
+| L_0001 | 37.8% | 86.9% | an****@gm**.com |
+| L_0002 | 24.6% | 50.8% | am****@gm**.com |
+| L_0003 | 49.8% | 92.1% | gr****@gm**.com |
+| L_0004 | 42.5% | 86.8% | pa****@ya**.com |
+| L_0005 | 26.0% | 70.4% | ca****@ou**.com |
+| L_0006 | 26.1% | 78.6% | to****@gm**.com |
+| L_0007 | 27.1% | 65.5% | pe****@ou**.com |
+| L_0008 | 28.0% | 74.4% | ki****@ou**.com |
+| L_0009 | 54.2% | 93.3% | pa****@ya**.com |
+| L_0010 | 38.1% | 83.0% | ro****@ou**.com |"""
+
+summary = """Of course. Here is a detailed summary of the 1,108 mortgage applications that were processed in the last cycle.
+
+###  executive-summary Executive Summary
+The automated loan processing agent has completed its review of the most recent batch of mortgage applications. A total of **1,108 applications** were processed, with **40.8%** being automatically approved and **15.3%** automatically rejected. A significant portion, **43.9%**, have been flagged for manual human review due to risk scores falling within a moderate range or because of data inconsistencies that require further verification.
+
+---
+### status-breakdown Application Status Breakdown
+The following table details the final disposition of all applications in the last batch.
+
+| Status | Count | Percentage |
+|---|---|---|
+| ✅ Approved | 452 | 40.8% |
+| ⚠️ Needs Human Review | 486 | 43.9% |
+| ❌ Rejected | 170 | 15.3% |
+| **Total** | **1,108** | **100%** |
+
+---
+### key-insights Key Insights & Trends
+*   **High Review Volume:** The largest single category of outcomes was "Needs Human Review," suggesting that a large number of applicants have risk profiles that are neither clearly favorable nor unfavorable. This highlights the importance of the human review stage in our process.
+*   **Strong Approval Rate:** A substantial number of applications were approved automatically, indicating a healthy pipeline of qualified applicants.
+*   **Rejection Analysis:** The rejected applications represent a smaller but significant segment. A deeper dive into the reasons for rejection could reveal opportunities to refine our initial screening criteria.
+
+---
+### download-reports Download Full Reports
+For a more granular analysis, you can download the complete reports.
+
+*   [Download the Excel Summary](https://storage.cloud.google.com/gartner_loan_processing_summary/generation_summary.xlsx)
+*   [View the Full HTML Report](https://storage.cloud.google.com/gartner_loan_processing_summary/loan_processing_report.html)
+
+Is there a specific part of this summary you would like to explore in more detail?
+"""
+
