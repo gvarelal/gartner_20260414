@@ -11,7 +11,8 @@ L_0001 = """| Loan Application ID | L_0001 |
 | **Risk Score** | 8 [Info: Risk Score is calculated based on the loan amount, income, and credit score] |
 | **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
 | **Warnings** | - Missing preferred documents: Bank Statement, Tax Statements.<br>- Name mismatch: \"Andrew Jason\" (Loan Application, Pay Stub) vs \"Andrew Jason Sample\" (Driver's License). Driver's License also has a \"SAMPLE\" watermark.<br>- SSN \"000-00-0000\" in Loan Application is a placeholder and requires secondary verification.<br>- Income discrepancy: $125,000 (Loan Application) vs $140,200 YTD (Pay Stub).<br>- Pay Stub has \"Fictional Signature line\". |
-| **Recommended Next Step** | - Send this application for deep review.<br>- Reach out to the user to verify SSN.<br>- Request valid Driver's License and Pay Stub without fictional elements.<br>- Request Bank Statements and Tax Statements.<br>- Clarify income discrepancy with the applicant.<br>- Verify applicant's identity due to document inconsistencies. |"""
+| **Recommended Next Step** | - Send this application for deep review.<br>- Reach out to the user to verify SSN.<br>- Request valid Driver's License and Pay Stub without fictional elements.<br>- Request Bank Statements and Tax Statements.<br>- Clarify income discrepancy with the applicant.<br>- Verify applicant's identity due to document inconsistencies. |
+| **Underwriting Worksheet** | [L_0001_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0001_processed.pdf) |"""
 
 L_0002 = """| Loan Application ID | L_0002 |
 |---|---|
@@ -23,7 +24,8 @@ L_0002 = """| Loan Application ID | L_0002 |
 | **Risk Score** | 2 [Info: Low Risk] |
 | **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
 | **Warnings** | - None.<br>- [System Check]: PII data matches 100% across all submitted documents.<br>- [System Check]: Income verified via payroll API ($150,000 vs $149,800 reported).<br>- [System Check]: FICO score 780 meets prime tier criteria. |
-| **Recommended Next Step** | - [LOS]: Push to automated closing queue.<br>- [LOS]: Generate closing disclosure (CD) and send to applicant.<br>- [LOS]: Wire funds to escrow account upon e-signature confirmation. |"""
+| **Recommended Next Step** | - [LOS]: Push to automated closing queue.<br>- [LOS]: Generate closing disclosure (CD) and send to applicant.<br>- [LOS]: Wire funds to escrow account upon e-signature confirmation. |
+| **Underwriting Worksheet** | [L_0002_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0002_processed.pdf) |"""
 
 L_0003 = """| Loan Application ID | L_0003 |
 |---|---|
@@ -35,7 +37,8 @@ L_0003 = """| Loan Application ID | L_0003 |
 | **Risk Score** | 10 [Info: High Risk] |
 | **Decision** | -+ REJECTED +- [Info: Risk Score between 9 and 10: REJECTED] |
 | **Warnings** | - [Failure]: Credit score 540 is below the minimum required 620 for this product.<br>- [Failure]: Calculated DTI is 49.8%, exceeding the maximum allowed 45%.<br>- [Failure]: Active tax lien found in public records search. |
-| **Recommended Next Step** | - [LOS]: Generate FCRA-compliant Adverse Action notice.<br>- [LOS]: Provide applicant with credit score disclosure and factors.<br>- [LOS]: Close file in system and retain for mandatory compliance period. |"""
+| **Recommended Next Step** | - [LOS]: Generate FCRA-compliant Adverse Action notice.<br>- [LOS]: Provide applicant with credit score disclosure and factors.<br>- [LOS]: Close file in system and retain for mandatory compliance period. |
+| **Underwriting Worksheet** | [L_0003_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0003_processed.pdf) |"""
 
 L_0004 = """| Loan Application ID | L_0004 |
 |---|---|
@@ -47,7 +50,8 @@ L_0004 = """| Loan Application ID | L_0004 |
 | **Risk Score** | 6 [Info: Medium Risk] |
 | **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
 | **Warnings** | - [Review Needed]: Income reported as self-employed; requires manual verification of 1040 Schedule C.<br>- [Review Needed]: Debt-to-Income ratio is at 42.5%, approaching the system threshold.<br>- [Review Needed]: Credit report shows a recent dispute on a primary credit card account. |
-| **Recommended Next Step** | - [LOS]: Assign to Senior Underwriter specializing in self-employment.<br>- [LOS]: Request last 24 months of business bank statements for cash flow analysis.<br>- [LOS]: Verify business registration status via Secretary of State portal. |"""
+| **Recommended Next Step** | - [LOS]: Assign to Senior Underwriter specializing in self-employment.<br>- [LOS]: Request last 24 months of business bank statements for cash flow analysis.<br>- [LOS]: Verify business registration status via Secretary of State portal. |
+| **Underwriting Worksheet** | [L_0004_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0004_processed.pdf) |"""
 
 L_0005 = """| Loan Application ID | L_0005 |
 |---|---|
@@ -59,7 +63,8 @@ L_0005 = """| Loan Application ID | L_0005 |
 | **Risk Score** | 1 [Info: Low Risk] |
 | **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
 | **Warnings** | - None.<br>- [System Check]: 10+ years of clean credit history verified with zero delinquencies.<br>- [System Check]: Employment confirmed directly with employer HR via automated API. |
-| **Recommended Next Step** | - [LOS]: Fast-track to document generation module.<br>- [LOS]: Send digital welcome package and loan terms to applicant. |"""
+| **Recommended Next Step** | - [LOS]: Fast-track to document generation module.<br>- [LOS]: Send digital welcome package and loan terms to applicant. |
+| **Underwriting Worksheet** | [L_0005_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0005_processed.pdf) |"""
 
 L_0006 = """| Loan Application ID | L_0006 |
 |---|---|
@@ -71,7 +76,8 @@ L_0006 = """| Loan Application ID | L_0006 |
 | **Risk Score** | 6 [Info: Medium Risk] |
 | **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
 | **Warnings** | - [Review Needed]: Unclassified application profile requiring standard manual triage.<br>- [Review Needed]: Address verification returned a partial match.<br>- [Review Needed]: Income documentation provided is in a non-standard format. |
-| **Recommended Next Step** | - [LOS]: Triage to manual review queue for general underwriting.<br>- [LOS]: Perform secondary address verification via postal database.<br>- [LOS]: Request standard W-2 or Tax Return forms. |"""
+| **Recommended Next Step** | - [LOS]: Triage to manual review queue for general underwriting.<br>- [LOS]: Perform secondary address verification via postal database.<br>- [LOS]: Request standard W-2 or Tax Return forms. |
+| **Underwriting Worksheet** | [L_0006_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0006_processed.pdf) |"""
 
 L_0007 = """| Loan Application ID | L_0007 |
 |---|---|
@@ -83,7 +89,8 @@ L_0007 = """| Loan Application ID | L_0007 |
 | **Risk Score** | 2 [Info: Low Risk] |
 | **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
 | **Warnings** | - None.<br>- [System Check]: Liquid reserves exceed minimum requirements by 150%.<br>- [System Check]: Low LTV ratio (35%) provides strong collateral position. |
-| **Recommended Next Step** | - [LOS]: Approve loan application and queue for closing.<br>- [LOS]: Notify assigned loan officer of green-light status.<br>- [LOS]: Generate automated closing document package. |"""
+| **Recommended Next Step** | - [LOS]: Approve loan application and queue for closing.<br>- [LOS]: Notify assigned loan officer of green-light status.<br>- [LOS]: Generate automated closing document package. |
+| **Underwriting Worksheet** | [L_0007_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0007_processed.pdf) |"""
 
 L_0008 = """| Loan Application ID | L_0008 |
 |---|---|
@@ -95,7 +102,8 @@ L_0008 = """| Loan Application ID | L_0008 |
 | **Risk Score** | 2 [Info: Low Risk] |
 | **Decision** | -+ APPROVED +- [Info: Risk Score between 1 and 4: APPROVED] |
 | **Warnings** | - None.<br>- [System Check]: Digital signatures on all documents are cryptographically valid.<br>- [System Check]: Income source matches historical tax transcripts. |
-| **Recommended Next Step** | - [LOS]: Execute automated approval workflow.<br>- [LOS]: Send e-sign link for final documents to applicant.<br>- [LOS]: Log green-light status in audit trail. |"""
+| **Recommended Next Step** | - [LOS]: Execute automated approval workflow.<br>- [LOS]: Send e-sign link for final documents to applicant.<br>- [LOS]: Log green-light status in audit trail. |
+| **Underwriting Worksheet** | [L_0008_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0008_processed.pdf) |"""
 
 L_0009 = """| Loan Application ID | L_0009 |
 |---|---|
@@ -107,7 +115,8 @@ L_0009 = """| Loan Application ID | L_0009 |
 | **Risk Score** | 10 [Info: High Risk] |
 | **Decision** | -+ REJECTED +- [Info: Risk Score between 9 and 10: REJECTED] |
 | **Warnings** | - [Failure]: Unable to verify income (scans provided are illegible).<br>- [Failure]: Applicant has insufficient credit history (thin file).<br>- [Failure]: Requested loan amount exceeds maximum permitted for calculated income. |
-| **Recommended Next Step** | - [LOS]: Send notice of incomplete application / adverse action.<br>- [LOS]: Provide instructions on how to appeal with valid documents. |"""
+| **Recommended Next Step** | - [LOS]: Send notice of incomplete application / adverse action.<br>- [LOS]: Provide instructions on how to appeal with valid documents. |
+| **Underwriting Worksheet** | [L_0009_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0009_processed.pdf) |"""
 
 L_0010 = """| Loan Application ID | L_0010 |
 |---|---|
@@ -119,7 +128,8 @@ L_0010 = """| Loan Application ID | L_0010 |
 | **Risk Score** | 6 [Info: Medium Risk] |
 | **Decision** | -+ NEEDS HUMAN REVIEW +- [Info: Risk Score between 5 and 8: NEEDS HUMAN REVIEW] |
 | **Warnings** | - [Review Needed]: Employment gap of 6 months in the last 2 years requires explanation.<br>- [Review Needed]: Unexplained large deposit of $50,000 in recent bank statement.<br>- [Review Needed]: Property appraisal value is borderline for requested loan amount. |
-| **Recommended Next Step** | - [LOS]: Request letter of explanation for employment gap from applicant.<br>- [LOS]: Request documentation for source of large deposit.<br>- [LOS]: Order desk review of property appraisal. |"""
+| **Recommended Next Step** | - [LOS]: Request letter of explanation for employment gap from applicant.<br>- [LOS]: Request documentation for source of large deposit.<br>- [LOS]: Order desk review of property appraisal. |
+| **Underwriting Worksheet** | [L_0010_processed.pdf](https://storage.cloud.google.com/gartner_loan_processing/L_0010_processed.pdf) |"""
 
 unprocessed = """Of course. Here are 10 unprocessed mortgage loan applications.
 
@@ -138,11 +148,11 @@ unprocessed = """Of course. Here are 10 unprocessed mortgage loan applications.
 
 summary = """Of course. Here is a detailed summary of the 1,108 mortgage applications that were processed in the last cycle.
 
-###  executive-summary Executive Summary
+### Executive Summary
 The automated loan processing agent has completed its review of the most recent batch of mortgage applications. A total of **1,108 applications** were processed, with **40.8%** being automatically approved and **15.3%** automatically rejected. A significant portion, **43.9%**, have been flagged for manual human review due to risk scores falling within a moderate range or because of data inconsistencies that require further verification.
 
 ---
-### status-breakdown Application Status Breakdown
+### Application Status Breakdown
 The following table details the final disposition of all applications in the last batch.
 
 | Status | Count | Percentage |
@@ -153,13 +163,13 @@ The following table details the final disposition of all applications in the las
 | **Total** | **1,108** | **100%** |
 
 ---
-### key-insights Key Insights & Trends
+### Key Insights & Trends
 *   **High Review Volume:** The largest single category of outcomes was "Needs Human Review," suggesting that a large number of applicants have risk profiles that are neither clearly favorable nor unfavorable. This highlights the importance of the human review stage in our process.
 *   **Strong Approval Rate:** A substantial number of applications were approved automatically, indicating a healthy pipeline of qualified applicants.
 *   **Rejection Analysis:** The rejected applications represent a smaller but significant segment. A deeper dive into the reasons for rejection could reveal opportunities to refine our initial screening criteria.
 
 ---
-### download-reports Download Full Reports
+### Download Full Reports
 For a more granular analysis, you can download the complete reports.
 
 *   [Download the Excel Summary](https://storage.cloud.google.com/gartner_loan_processing_summary/generation_summary.xlsx)
@@ -167,4 +177,347 @@ For a more granular analysis, you can download the complete reports.
 
 Is there a specific part of this summary you would like to explore in more detail?
 """
+
+[document_retriever]
+L_0001 = """### Document Retrieval Status
+- **Application ID**: L_0001
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (45 KB)
+  * **Income Evidence**: Pay_Stub.png (142 KB)
+  * **Identity Document**: Driver_License.png (98 KB)"""
+
+L_0002 = """### Document Retrieval Status
+- **Application ID**: L_0002
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (42 KB)
+  * **Income Evidence**: W2_Tax_Statement.pdf (85 KB)
+  * **Identity Document**: Driver_License.png (92 KB)"""
+
+L_0003 = """### Document Retrieval Status
+- **Application ID**: L_0003
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (48 KB)
+  * **Income Evidence**: Pay_Stub_1.png (110 KB), Pay_Stub_2.png (115 KB)
+  * **Identity Document**: Driver_License.png (95 KB)"""
+
+L_0004 = """### Document Retrieval Status
+- **Application ID**: L_0004
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (46 KB)
+  * **Income Evidence**: Tax_Return_1040.pdf (210 KB)
+  * **Identity Document**: Driver_License.png (94 KB)"""
+
+L_0005 = """### Document Retrieval Status
+- **Application ID**: L_0005
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (41 KB)
+  * **Income Evidence**: Pay_Stub.png (130 KB)
+  * **Identity Document**: Driver_License.png (89 KB)"""
+
+L_0006 = """### Document Retrieval Status
+- **Application ID**: L_0006
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (43 KB)
+  * **Income Evidence**: W2_Form.pdf (78 KB)
+  * **Identity Document**: Passport.pdf (150 KB)"""
+
+L_0007 = """### Document Retrieval Status
+- **Application ID**: L_0007
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (44 KB)
+  * **Income Evidence**: Pay_Stub_Dec.png (122 KB)
+  * **Identity Document**: Driver_License.png (96 KB)"""
+
+L_0008 = """### Document Retrieval Status
+- **Application ID**: L_0008
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (45 KB)
+  * **Income Evidence**: W2_2025.pdf (88 KB)
+  * **Identity Document**: Passport.pdf (152 KB)"""
+
+L_0009 = """### Document Retrieval Status
+- **Application ID**: L_0009
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (49 KB)
+  * **Income Evidence**: Bank_Statements.pdf (1.2 MB)
+  * **Identity Document**: Driver_License.png (101 KB)"""
+
+L_0010 = """### Document Retrieval Status
+- **Application ID**: L_0010
+- **Status**: Success
+- **Files Retrieved**:
+  * **Application Form**: Application.pdf (44 KB)
+  * **Income Evidence**: Pay_Stub_Nov.png (115 KB)
+  * **Identity Document**: Driver_License.png (95 KB)"""
+
+
+[document_validator]
+L_0001 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matching in Application and Pay Stub ('Andrew Jason'). Driver's License has 'Andrew Jason Sample'.
+  * **SSN**: Matching in Application and Bureau ('000-00-0000').
+  * **Income**: Self-reported $125,000 matches Pay Stub gross YTD.
+- **Inconsistencies & Warnings**:
+  * Driver's License has 'SAMPLE' watermark.
+  * SSN is placeholder format.
+  * Driver's License name mismatch ('Sample' suffix).
+  * Pay stub has a fictional signature line."""
+
+L_0002 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matching perfectly across all files ('Cristian Santos').
+  * **SSN**: Matches '000-00-0002' exactly.
+  * **Income**: Verified W2 Income is $150,000 (reported: $149,800).
+- **Inconsistencies & Warnings**: None. High-confidence OCR extraction with zero flags."""
+
+L_0003 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Gregory Baker') across files.
+  * **SSN**: Matches '000-00-0003'.
+  * **Income**: Verified monthly pay stub gross annualizes to $45,000.
+- **Inconsistencies & Warnings**:
+  * Major self-reported income mismatch ($150,000 reported vs $45,000 verified)."""
+
+L_0004 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Patricia Galloway') across files.
+  * **SSN**: Matches '000-00-0004'.
+  * **Income**: Verified 1040 Schedule C shows $85,000 net self-employment income.
+- **Inconsistencies & Warnings**:
+  * Income mismatch: self-reported $110,000 vs verified self-employment $85,000."""
+
+L_0005 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Carolyn Daniel') across files.
+  * **SSN**: Matches '000-00-0005'.
+  * **Income**: Verified gross annual income is $160,000.
+- **Inconsistencies & Warnings**: None. Employment confirmed via automated HR payroll API."""
+
+L_0006 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Tommy Walter') across files.
+  * **SSN**: Matches '000-00-0006'.
+  * **Income**: Verified W2 gross income is $85,000.
+- **Inconsistencies & Warnings**:
+  * Address mismatch: Application shows primary residence different from Passport issue registry."""
+
+L_0007 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Peter Callahan Jr.') across files.
+  * **SSN**: Matches '000-00-0007'.
+  * **Income**: Verified pay stub annualizes to $145,000.
+- **Inconsistencies & Warnings**: None. Clear OCR reads with matching signature data."""
+
+L_0008 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Kimberly Adams') across files.
+  * **SSN**: Matches '000-00-0008'.
+  * **Income**: Verified W2 annual income is $155,000.
+- **Inconsistencies & Warnings**: None. Cryptographically secure signatures validated."""
+
+L_0009 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Paula Moreno') across files.
+  * **SSN**: Matches '000-00-0009'.
+  * **Income**: Verified bank statements support $40,000 total deposits.
+- **Inconsistencies & Warnings**:
+  * Major income discrepancy: self-reported $165,000 vs bank statement verified $40,000.
+  * Uploaded bank statements contain blurred and illegible pages."""
+
+L_0010 = """### Document Validation & OCR Results
+- **Document Type Verification**: Complete
+- **Field Integrity**:
+  * **Name**: Matches ('Rose Spence') across files.
+  * **SSN**: Matches '000-00-0010'.
+  * **Income**: Verified annual gross salary is $80,000.
+- **Inconsistencies & Warnings**:
+  * Employment history shows a gap of 6 months in the last 2 years."""
+
+
+[credit_checker]
+L_0001 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 680 (Near Prime)
+- **Active Trade Lines**: 8
+- **Late Payments (24 Mo)**: 0
+- **Total Debt Balance**: $47,250
+- **Bureau Status**: Active / Verified"""
+
+L_0002 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 780 (Super Prime)
+- **Active Trade Lines**: 14
+- **Late Payments (24 Mo)**: 0
+- **Total Debt Balance**: $12,400
+- **Bureau Status**: Active / Verified"""
+
+L_0003 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 540 (Subprime)
+- **Active Trade Lines**: 5
+- **Late Payments (24 Mo)**: 4
+- **Total Debt Balance**: $88,900
+- **Bureau Status**: Flagged - Tax Lien Active"""
+
+L_0004 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 650 (Near Prime)
+- **Active Trade Lines**: 9
+- **Late Payments (24 Mo)**: 0
+- **Total Debt Balance**: $36,100
+- **Bureau Status**: Under Dispute (1 item)"""
+
+L_0005 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 790 (Super Prime)
+- **Active Trade Lines**: 18
+- **Late Payments (24 Mo)**: 0
+- **Total Debt Balance**: $5,000
+- **Bureau Status**: Active / Verified"""
+
+L_0006 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 650 (Near Prime)
+- **Active Trade Lines**: 7
+- **Late Payments (24 Mo)**: 1
+- **Total Debt Balance**: $22,180
+- **Bureau Status**: Active / Verified"""
+
+L_0007 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 760 (Super Prime)
+- **Active Trade Lines**: 12
+- **Late Payments (24 Mo)**: 0
+- **Total Debt Balance**: $18,900
+- **Bureau Status**: Active / Verified"""
+
+L_0008 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 770 (Super Prime)
+- **Active Trade Lines**: 15
+- **Late Payments (24 Mo)**: 0
+- **Total Debt Balance**: $8,700
+- **Bureau Status**: Active / Verified"""
+
+L_0009 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 520 (Subprime)
+- **Active Trade Lines**: 4
+- **Late Payments (24 Mo)**: 3
+- **Total Debt Balance**: $55,200
+- **Bureau Status**: Flagged - Thin Credit History"""
+
+L_0010 = """### Credit Bureau Assessment
+- **FICO Credit Score**: 660 (Near Prime)
+- **Active Trade Lines**: 6
+- **Late Payments (24 Mo)**: 0
+- **Total Debt Balance**: $30,480
+- **Bureau Status**: Active / Verified"""
+
+
+
+[risk_assessor]
+L_0001 = """### Underwriting Risk Evaluation
+- **Risk Score**: 8 / 10
+- **Risk Category**: Medium-High Risk
+- **Risk Assessment Indicators**:
+  * SSN format check failure.
+  * Identity/Name mismatch check.
+  * Document forgery watermark flag.
+- **Mitigants**: Active YTD income is stable.
+- **Underwriting Suggestion**: Route to Manual Triage Queue."""
+
+L_0002 = """### Underwriting Risk Evaluation
+- **Risk Score**: 2 / 10
+- **Risk Category**: Low Risk
+- **Risk Assessment Indicators**:
+  * Super-prime credit score (780).
+  * Low debt-to-income ratio.
+- **Mitigants**: Strong payroll-verified income.
+- **Underwriting Suggestion**: Proceed to Auto-Approval."""
+
+L_0003 = """### Underwriting Risk Evaluation
+- **Risk Score**: 10 / 10
+- **Risk Category**: High Risk
+- **Risk Assessment Indicators**:
+  * Active public tax lien.
+  * Sub-minimum credit score (540).
+  * Excessive DTI ratio.
+- **Mitigants**: None identified.
+- **Underwriting Suggestion**: Auto-Rejection."""
+
+L_0004 = """### Underwriting Risk Evaluation
+- **Risk Score**: 6 / 10
+- **Risk Category**: Medium Risk
+- **Risk Assessment Indicators**:
+  * Self-employment cash-flow volatility.
+  * Recent bureau dispute flag.
+- **Mitigants**: Prime credit score (710).
+- **Underwriting Suggestion**: Route to Senior Self-Employed Underwriter."""
+
+L_0005 = """### Underwriting Risk Evaluation
+- **Risk Score**: 1 / 10
+- **Risk Category**: Low Risk
+- **Risk Assessment Indicators**:
+  * Exceptional credit rating (810).
+  * Stable verified corporate income.
+- **Mitigants**: High liquid reserves.
+- **Underwriting Suggestion**: Fast-track to Automated Closing."""
+
+L_0006 = """### Underwriting Risk Evaluation
+- **Risk Score**: 6 / 10
+- **Risk Category**: Medium Risk
+- **Risk Assessment Indicators**:
+  * Partial address verification mismatch.
+  * Non-standard document format.
+- **Mitigants**: Low credit balance usage.
+- **Underwriting Suggestion**: Route to Manual Address Verification Triage."""
+
+L_0007 = """### Underwriting Risk Evaluation
+- **Risk Score**: 2 / 10
+- **Risk Category**: Low Risk
+- **Risk Assessment Indicators**:
+  * Solid LTV ratio (35%).
+  * Substantial liquid reserves.
+- **Mitigants**: Excellent credit history.
+- **Underwriting Suggestion**: Fast-track to closing."""
+
+L_0008 = """### Underwriting Risk Evaluation
+- **Risk Score**: 2 / 10
+- **Risk Category**: Low Risk
+- **Risk Assessment Indicators**:
+  * Cryptographically valid documentation.
+  * Historical income consistency.
+- **Mitigants**: Low total debt profile.
+- **Underwriting Suggestion**: Proceed to Auto-Approval."""
+
+L_0009 = """### Underwriting Risk Evaluation
+- **Risk Score**: 10 / 10
+- **Risk Category**: High Risk
+- **Risk Assessment Indicators**:
+  * Illegible financial scans.
+  * Thin credit file with multiple late payments.
+  * Extreme requested loan-to-income ratio.
+- **Mitigants**: None identified.
+- **Underwriting Suggestion**: Auto-Rejection."""
+
+L_0010 = """### Underwriting Risk Evaluation
+- **Risk Score**: 6 / 10
+- **Risk Category**: Medium Risk
+- **Risk Assessment Indicators**:
+  * Recent employment gap (6 months).
+  * Borderline property collateral appraisal.
+  * High unexplained liquid deposit ($50,000).
+- **Mitigants**: Standard near-prime credit score (660).
+- **Underwriting Suggestion**: Route to manual asset source verification."""
+
 

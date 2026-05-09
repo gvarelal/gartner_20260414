@@ -1098,3 +1098,13 @@
 | L_9977 | Jordan Mcdaniel | jordan.mcdaniel@yahoo.com | APPROVED | Tier 1 (Low Risk) | 39.3% | 59.5% |
 | L_9980 | Matthew Richardson | matthew.richardson@gmail.com | NEEDS HUMAN REVIEW | Tier 2 (Medium Risk) | 20.2% | 72.6% |
 | L_9996 | Nicole Owen | sherry.kelly@gmail.com | REJECTED | Tier 3 (High Risk) | 27.2% | 93.3% |
+| L_0001 | Andrew Jason | andrew.jason@example.com | NEEDS HUMAN REVIEW | Tier 2 (Medium Risk) | 37.8% | 86.9% |
+| L_0002 | Cristian Santos | amy.robinson@gmail.com | APPROVED | Tier 1 (Low Risk) | 24.6% | 50.8% |
+| L_0003 | Gregory Baker | gregory.baker@gmail.com | REJECTED | Tier 3 (High Risk) | 49.8% | 92.1% |
+| L_0004 | Patricia Galloway | patricia.galloway@yahoo.com | NEEDS HUMAN REVIEW | Tier 2 (Medium Risk) | 42.5% | 86.8% |
+| L_0005 | Carolyn Daniel | carolyn.daniel@outlook.com | APPROVED | Tier 1 (Low Risk) | 26.0% | 70.4% |
+| L_0006 | Tommy Walter | tommy.walter@gmail.com | NEEDS HUMAN REVIEW | Tier 2 (Medium Risk) | 26.1% | 78.6% |
+| L_0007 | Peter Callahan Jr. | peter.callahan.jr.@outlook.com | APPROVED | Tier 1 (Low Risk) | 27.1% | 65.5% |
+| L_0008 | Kimberly Adams | kimberly.adams@outlook.com | APPROVED | Tier 1 (Low Risk) | 28.0% | 74.4% |
+| L_0009 | Paula Moreno | paula.moreno@yahoo.com | REJECTED | Tier 3 (High Risk) | 54.2% | 93.3% |
+| L_0010 | Rose Spence | rose.spence@outlook.com | NEEDS HUMAN REVIEW | Tier 2 (Medium Risk) | 38.1% | 83.0% |

@@ -1648,7 +1648,7 @@ wheels = [
 
 [[package]]
 name = "loan-supervisor"
-version = "20260508.3"
+version = "20260508.5"
 source = { editable = "." }
 dependencies = [
     { name = "a2a-sdk" },

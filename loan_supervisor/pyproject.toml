@@ -1,6 +1,6 @@
 [project]
 name = "loan-supervisor"
-version = "20260508.3"
+version = "20260508.5"
 description = "An automated multi-agent system that processes mortgage loan applications, evaluates creditworthiness, performs risk assessment, and generates underwriting decisions."
 authors = [{ name = "Your Name", email = "your@email.com" }]
 dependencies = [
@@ -89,8 +89,8 @@ packages = ["app", "frontend"]
 [tool.agents-cli]
 # Generation metadata - enables CLI commands to understand project context
 # These fields allow any generated project to work as a remote template
-name = "Loan Supervisor 20260508.3"
-description = "An automated multi-agent system that processes mortgage loan applications, evaluates creditworthiness, performs risk assessment, and generates underwriting decisions (v20260508.3)."
+name = "Loan Supervisor 20260508.5"
+description = "An automated multi-agent system that processes mortgage loan applications, evaluates creditworthiness, performs risk assessment, and generates underwriting decisions (v20260508.5)."
 base_template = "adk"
 agent_directory = "app"
 

@@ -320,6 +320,213 @@ def generate_record(counter):
     import datetime
     
     loan_id = f"L_{counter:04d}"
+    
+    # Hardcoded records for L_0001 to L_0010 to match responses.toml and pending_applications.md exactly
+    if 1 <= counter <= 10:
+        timestamp = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+        bureau_ref = f"EXP-{random.randint(100000, 999999)}-X"
+        ocr_confidence = "99%"
+        
+        records = {
+            1: {
+                "loan_id": "L_0001",
+                "name": "Andrew Jason",
+                "email": "andrew.jason@example.com",
+                "phone": "+1-555-010-9988",
+                "ssn": "000-00-0000",
+                "income": "$125,000",
+                "loan_amount": "$75,000",
+                "property_value": "$86,300",
+                "credit_score": "680",
+                "risk_tier": "Tier 2 (Medium Risk)",
+                "disposition": "NEEDS HUMAN REVIEW",
+                "decision_class": "decision-review",
+                "data_integrity_flags": "- Missing preferred documents: Bank Statement, Tax Statements.<br>- Name mismatch: \"Andrew Jason\" (Loan Application, Pay Stub) vs \"Andrew Jason Sample\" (Driver's License). Driver's License also has a \"SAMPLE\" watermark.<br>- SSN \"000-00-0000\" in Loan Application is a placeholder and requires secondary verification.<br>- Income discrepancy: $125,000 (Loan Application) vs $140,200 YTD (Pay Stub).<br>- Pay Stub has \"Fictional Signature line\".",
+                "credit_policy_flags": "- None",
+                "next_steps": "- Send this application for deep review.<br>- Reach out to the user to verify SSN.<br>- Request valid Driver's License and Pay Stub without fictional elements.<br>- Request Bank Statements and Tax Statements.<br>- Clarify income discrepancy with the applicant.<br>- Verify applicant's identity due to document inconsistencies.",
+                "dti": "37.8%",
+                "ltv": "86.9%"
+            },
+            2: {
+                "loan_id": "L_0002",
+                "name": "Cristian Santos",
+                "email": "amy.robinson@gmail.com",
+                "phone": "+1-555-019-4432",
+                "ssn": "666-23-8901",
+                "income": "$150,000",
+                "loan_amount": "$50,000",
+                "property_value": "$98,400",
+                "credit_score": "780",
+                "risk_tier": "Tier 1 (Low Risk)",
+                "disposition": "APPROVED",
+                "decision_class": "decision-approved",
+                "data_integrity_flags": "- [System Check]: PII data matches 100% across all submitted documents.",
+                "credit_policy_flags": "- [System Check]: Income verified via payroll API ($150,000 vs $149,800 reported).<br>- [System Check]: FICO score 780 meets prime tier criteria.",
+                "next_steps": "- [LOS]: Push to automated closing queue.<br>- [LOS]: Generate closing disclosure (CD) and send to applicant.<br>- [LOS]: Wire funds to escrow account upon e-signature confirmation.",
+                "dti": "24.6%",
+                "ltv": "50.8%"
+            },
+            3: {
+                "loan_id": "L_0003",
+                "name": "Gregory Baker",
+                "email": "gregory.baker@gmail.com",
+                "phone": "+1-555-014-8821",
+                "ssn": "666-45-1234",
+                "income": "$45,000",
+                "loan_amount": "$120,000",
+                "property_value": "$130,300",
+                "credit_score": "540",
+                "risk_tier": "Tier 3 (High Risk)",
+                "disposition": "REJECTED",
+                "decision_class": "decision-rejected",
+                "data_integrity_flags": "- None",
+                "credit_policy_flags": "- [Failure]: Credit score 540 is below the minimum required 620 for this product.<br>- [Failure]: Calculated DTI is 49.8%, exceeding the maximum allowed 45%.<br>- [Failure]: Active tax lien found in public records search.",
+                "next_steps": "- [LOS]: Generate FCRA-compliant Adverse Action notice.<br>- [LOS]: Provide applicant with credit score disclosure and factors.<br>- [LOS]: Close file in system and retain for mandatory compliance period.",
+                "dti": "49.8%",
+                "ltv": "92.1%"
+            },
+            4: {
+                "loan_id": "L_0004",
+                "name": "Patricia Galloway",
+                "email": "patricia.galloway@yahoo.com",
+                "phone": "+1-555-012-7744",
+                "ssn": "666-78-5678",
+                "income": "$85,000",
+                "loan_amount": "$90,000",
+                "property_value": "$103,700",
+                "credit_score": "650",
+                "risk_tier": "Tier 2 (Medium Risk)",
+                "disposition": "NEEDS HUMAN REVIEW",
+                "decision_class": "decision-review",
+                "data_integrity_flags": "- None",
+                "credit_policy_flags": "- [Review Needed]: Income reported as self-employed; requires manual verification of 1040 Schedule C.<br>- [Review Needed]: Debt-to-Income ratio is at 42.5%, approaching the system threshold.<br>- [Review Needed]: Credit report shows a recent dispute on a primary credit card account.",
+                "next_steps": "- [LOS]: Assign to Senior Underwriter specializing in self-employment.<br>- [LOS]: Request last 24 months of business bank statements for cash flow analysis.<br>- [LOS]: Verify business registration status via Secretary of State portal.",
+                "dti": "42.5%",
+                "ltv": "86.8%"
+            },
+            5: {
+                "loan_id": "L_0005",
+                "name": "Carolyn Daniel",
+                "email": "carolyn.daniel@outlook.com",
+                "phone": "+1-555-011-5566",
+                "ssn": "666-12-3456",
+                "income": "$160,000",
+                "loan_amount": "$40,000",
+                "property_value": "$56,800",
+                "credit_score": "790",
+                "risk_tier": "Tier 1 (Low Risk)",
+                "disposition": "APPROVED",
+                "decision_class": "decision-approved",
+                "data_integrity_flags": "- None",
+                "credit_policy_flags": "- [System Check]: 10+ years of clean credit history verified with zero delinquencies.<br>- [System Check]: Employment confirmed directly with employer HR via automated API.",
+                "next_steps": "- [LOS]: Fast-track to document generation module.<br>- [LOS]: Send digital welcome package and loan terms to applicant.",
+                "dti": "26.0%",
+                "ltv": "70.4%"
+            },
+            6: {
+                "loan_id": "L_0006",
+                "name": "Tommy Walter",
+                "email": "tommy.walter@gmail.com",
+                "phone": "+1-555-013-9900",
+                "ssn": "666-89-0123",
+                "income": "$85,000",
+                "loan_amount": "$90,000",
+                "property_value": "$114,500",
+                "credit_score": "650",
+                "risk_tier": "Tier 2 (Medium Risk)",
+                "disposition": "NEEDS HUMAN REVIEW",
+                "decision_class": "decision-review",
+                "data_integrity_flags": "- [Review Needed]: Income documentation provided is in a non-standard format.<br>- [Review Needed]: Address verification returned a partial match.",
+                "credit_policy_flags": "- [Review Needed]: Unclassified application profile requiring standard manual triage.",
+                "next_steps": "- [LOS]: Triage to manual review queue for general underwriting.<br>- [LOS]: Perform secondary address verification via postal database.<br>- [LOS]: Request standard W-2 or Tax Return forms.",
+                "dti": "26.1%",
+                "ltv": "78.6%"
+            },
+            7: {
+                "loan_id": "L_0007",
+                "name": "Peter Callahan Jr.",
+                "email": "peter.callahan.jr.@outlook.com",
+                "phone": "+1-555-017-1122",
+                "ssn": "666-56-7890",
+                "income": "$145,000",
+                "loan_amount": "$55,000",
+                "property_value": "$84,000",
+                "credit_score": "760",
+                "risk_tier": "Tier 1 (Low Risk)",
+                "disposition": "APPROVED",
+                "decision_class": "decision-approved",
+                "data_integrity_flags": "- None",
+                "credit_policy_flags": "- [System Check]: Liquid reserves exceed minimum requirements by 150%.<br>- [System Check]: Low LTV ratio (35%) provides strong collateral position.",
+                "next_steps": "- [LOS]: Approve loan application and queue for closing.<br>- [LOS]: Notify assigned loan officer of green-light status.<br>- [LOS]: Generate automated closing document package.",
+                "dti": "27.1%",
+                "ltv": "65.5%"
+            },
+            8: {
+                "loan_id": "L_0008",
+                "name": "Kimberly Adams",
+                "email": "kimberly.adams@outlook.com",
+                "phone": "+1-555-015-3344",
+                "ssn": "666-34-5678",
+                "income": "$155,000",
+                "loan_amount": "$45,000",
+                "property_value": "$60,500",
+                "credit_score": "770",
+                "risk_tier": "Tier 1 (Low Risk)",
+                "disposition": "APPROVED",
+                "decision_class": "decision-approved",
+                "data_integrity_flags": "- [System Check]: Digital signatures on all documents are cryptographically valid.",
+                "credit_policy_flags": "- [System Check]: Income source matches historical tax transcripts.",
+                "next_steps": "- [LOS]: Execute automated approval workflow.<br>- [LOS]: Send e-sign link for final documents to applicant.<br>- [LOS]: Log green-light status in audit trail.",
+                "dti": "28.0%",
+                "ltv": "74.4%"
+            },
+            9: {
+                "loan_id": "L_0009",
+                "name": "Paula Moreno",
+                "email": "paula.moreno@yahoo.com",
+                "phone": "+1-555-018-5566",
+                "ssn": "666-90-1234",
+                "income": "$40,000",
+                "loan_amount": "$130,000",
+                "property_value": "$139,300",
+                "credit_score": "520",
+                "risk_tier": "Tier 3 (High Risk)",
+                "disposition": "REJECTED",
+                "decision_class": "decision-rejected",
+                "data_integrity_flags": "- [Failure]: Unable to verify income (scans provided are illegible).<br>- [Failure]: Applicant has insufficient credit history (thin file).",
+                "credit_policy_flags": "- [Failure]: Requested loan amount exceeds maximum permitted for calculated income.",
+                "next_steps": "- [LOS]: Send notice of incomplete application / adverse action.<br>- [LOS]: Provide instructions on how to appeal with valid documents.",
+                "dti": "54.2%",
+                "ltv": "93.3%"
+            },
+            10: {
+                "loan_id": "L_0010",
+                "name": "Rose Spence",
+                "email": "rose.spence@outlook.com",
+                "phone": "+1-555-016-7788",
+                "ssn": "666-78-9012",
+                "income": "$80,000",
+                "loan_amount": "$95,000",
+                "property_value": "$114,500",
+                "credit_score": "660",
+                "risk_tier": "Tier 2 (Medium Risk)",
+                "disposition": "NEEDS HUMAN REVIEW",
+                "decision_class": "decision-review",
+                "data_integrity_flags": "- None",
+                "credit_policy_flags": "- [Review Needed]: Debt-to-Income ratio is at 38.1%, approaching limit.",
+                "next_steps": "- [LOS]: Assign to manual review queue.<br>- [LOS]: Request standard verification documents.",
+                "dti": "38.1%",
+                "ltv": "83.0%"
+            }
+        }
+        
+        res = records[counter]
+        res["ocr_confidence"] = ocr_confidence
+        res["timestamp"] = timestamp
+        res["bureau_ref"] = bureau_ref
+        res["model_version"] = "Underwriting_Engine_v4.2.1"
+        return res
+
     name = fake.name()
     
     # Fraud simulation: 5% chance of mismatch

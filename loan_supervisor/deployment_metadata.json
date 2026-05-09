@@ -1,6 +1,13 @@
 {
-  "remote_agent_runtime_id": "projects/53454032082/locations/us-east1/reasoningEngines/3406199061919825920",
+  "remote_agent_runtime_id": "projects/53454032082/locations/us-east1/reasoningEngines/9021624847297413120",
   "deployment_target": "agent_runtime",
   "is_a2a": false,
-  "deployment_timestamp": "2026-05-08T15:35:03.425357"
+  "deployment_timestamp": "2026-05-08T17:49:11.744859",
+  "pending_operation": {
+    "operation_name": "projects/53454032082/locations/us-east1/reasoningEngines/9021624847297413120/operations/4879325084411494400",
+    "project": "demo4events10",
+    "location": "us-east1",
+    "deployment_target": "agent_runtime",
+    "started_at": "2026-05-09T20:19:26.585702+00:00"
+  }
 }

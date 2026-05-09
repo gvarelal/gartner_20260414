@@ -741,11 +741,11 @@ Here is the summary of the last batch: 1,108 applications processed. 452 Approve
 text = """
 Of course. Here is a detailed summary of the 1,108 mortgage applications that were processed in the last cycle.
 
-###  executive-summary Executive Summary
+### Executive Summary
 The automated loan processing agent has completed its review of the most recent batch of mortgage applications. A total of **1,108 applications** were processed, with **40.8%** being automatically approved and **15.3%** automatically rejected. A significant portion, **43.9%**, have been flagged for manual human review due to risk scores falling within a moderate range or because of data inconsistencies that require further verification.
 
 ---
-### status-breakdown Application Status Breakdown
+### Application Status Breakdown
 The following table details the final disposition of all applications in the last batch.
 
 | Status | Count | Percentage |
@@ -756,13 +756,13 @@ The following table details the final disposition of all applications in the las
 | **Total** | **1,108** | **100%** |
 
 ---
-### key-insights Key Insights & Trends
+### Key Insights & Trends
 *   **High Review Volume:** The largest single category of outcomes was "Needs Human Review," suggesting that a large number of applicants have risk profiles that are neither clearly favorable nor unfavorable. This highlights the importance of the human review stage in our process.
 *   **Strong Approval Rate:** A substantial number of applications were approved automatically, indicating a healthy pipeline of qualified applicants.
 *   **Rejection Analysis:** The rejected applications represent a smaller but significant segment. A deeper dive into the reasons for rejection could reveal opportunities to refine our initial screening criteria.
 
 ---
-### download-reports Download Full Reports
+### Download Full Reports
 For a more granular analysis, you can download the complete reports.
 
 *   [Download the Excel Summary](https://storage.cloud.google.com/gartner_loan_processing_summary/generation_summary.xlsx)
