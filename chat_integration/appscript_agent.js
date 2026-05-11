@@ -1,7 +1,105 @@
+const version = "AGENT_V5 (Workspace Add-on with Chat Push and Native Card Return)";
+
+function doPost(e) {
+  try {
+    console.log("Received POST request in Web App Bridge. Version: " + version);
+    var event = JSON.parse(e.postData.contents);
+    console.log("Received event:", JSON.stringify(event));
+    
+    // Extract text
+    var text = "";
+    if (event && event.chat && event.chat.messagePayload && event.chat.messagePayload.message) {
+      text = event.chat.messagePayload.message.text;
+    } else if (event && event.message && event.message.text) {
+      text = event.message.text;
+    }
+    
+    console.log("Extracted text: " + text);
+    
+    var responseText = getAgentResponse(text);
+    var responsePayload = buildChatResponseJSON(responseText);
+    
+    return ContentService.createTextOutput(JSON.stringify(responsePayload))
+                         .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    console.error("Web App Bridge Crash: " + err.toString());
+    var errPayload = {
+      "text": "🚨 *Web App Bridge Crash Error:*\n" + err.toString()
+    };
+    return ContentService.createTextOutput(JSON.stringify(errPayload))
+                         .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function onMessage(event) {
+  try {
+    console.log("Received direct onMessage invocation. Version: " + version);
+    console.log("Received event:", JSON.stringify(event));
+    
+    var text = "";
+    var spaceName = "";
+    if (event && event.chat && event.chat.messagePayload) {
+      text = event.chat.messagePayload.message.text;
+      spaceName = event.chat.messagePayload.space.name;
+    } else if (event && event.message) {
+      text = event.message.text;
+      spaceName = event.space.name;
+    }
+    
+    console.log("Extracted text: " + text + ", spaceName: " + spaceName);
+    
+    var responseText = getAgentResponse(text);
+    
+    if (spaceName) {
+      try {
+        console.log("Pushing text message via Chat Advanced Service to space: " + spaceName);
+        Chat.Spaces.Messages.create({ "text": responseText }, spaceName);
+        console.log("Message pushed successfully!");
+      } catch (e) {
+        console.error("Error pushing message via Chat Advanced Service: " + e.toString());
+      }
+    }
+    
+    return buildPlaceholderCard();
+  } catch (e) {
+    console.error("Direct onMessage Crash Error: " + e.toString());
+    return CardService.newCardBuilder()
+      .setHeader(CardService.newCardHeader().setTitle("Loan Supervisor Error"))
+      .addSection(CardService.newCardSection().addWidget(CardService.newTextParagraph().setText("Error: " + e.toString())))
+      .build();
+  }
+}
+
+// Shared Agent Query Logic
+function getAgentResponse(text) {
+  if (!text || text.trim() === "") {
+    return "Please provide a command.";
+  }
+  
+  console.log("Checking session...");
+  var userProperties = PropertiesService.getUserProperties();
+  var sessionId = userProperties.getProperty('sessionId_v3');
+  
+  if (!sessionId) {
+    console.log("No session found, creating new session...");
+    sessionId = createSession();
+    if (sessionId) {
+      userProperties.setProperty('sessionId_v3', sessionId);
+      console.log("New session saved: " + sessionId);
+    }
+  } else {
+    console.log("Using existing session: " + sessionId);
+  }
+  
+  console.log("Querying agent...");
+  var responseText = queryReasoningEngine(text, sessionId);
+  return responseText;
+}
+
 function queryReasoningEngine(queryText, sessionId) {
   const PROJECT_ID = "demo4events10";
-  const LOCATION = "us-central1";
-  const REASONING_ENGINE_ID = "5328541761214087168";
+  const LOCATION = "us-east1";
+  const REASONING_ENGINE_ID = "9021624847297413120";
   
   // ADK agents require the streamQuery endpoint
   var url = "https://" + LOCATION + "-aiplatform.googleapis.com/v1/projects/" + PROJECT_ID + "/locations/" + LOCATION + "/reasoningEngines/" + REASONING_ENGINE_ID + ":streamQuery?alt=sse";
@@ -63,11 +161,15 @@ function queryReasoningEngine(queryText, sessionId) {
     var formattedFinalResponse = convertTableToText(finalResponse);
     
     var combinedResponse = "";
-    if (thinkingResponse) {
+    if (thinkingResponse && thinkingResponse.trim() !== "") {
       combinedResponse += "*Thinking:*\n" + thinkingResponse + "\n";
-    }
-    if (formattedFinalResponse) {
-      combinedResponse += "*Final response:*\n" + formattedFinalResponse;
+      if (formattedFinalResponse) {
+        combinedResponse += "*Final response:*\n" + formattedFinalResponse;
+      }
+    } else {
+      if (formattedFinalResponse) {
+        combinedResponse += formattedFinalResponse;
+      }
     }
     
     // Convert markdown links [Text](URL) to Google Chat format <URL|Text>
@@ -82,8 +184,8 @@ function queryReasoningEngine(queryText, sessionId) {
 
 function createSession() {
   const PROJECT_ID = "demo4events10";
-  const LOCATION = "us-central1";
-  const REASONING_ENGINE_ID = "5328541761214087168";
+  const LOCATION = "us-east1";
+  const REASONING_ENGINE_ID = "9021624847297413120";
   
   var url = "https://" + LOCATION + "-aiplatform.googleapis.com/v1/projects/" + PROJECT_ID + "/locations/" + LOCATION + "/reasoningEngines/" + REASONING_ENGINE_ID + ":query";
   
@@ -167,68 +269,42 @@ function convertTableToText(text) {
   return result;
 }
 
-function onMessage(event) {
-  const version = "AGENT_V1 (Real Agent Call)";
-  console.log("Running version: " + version);
-  console.log("Received event:", JSON.stringify(event));
-  
-  var text = "";
-  var spaceName = "";
- 
-  // Extract text and space name safely
-  if (event && event.chat && event.chat.messagePayload) {
-    text = event.chat.messagePayload.message.text;
-    spaceName = event.chat.messagePayload.space.name;
-  } else if (event.message) {
-    text = event.message.text;
-    spaceName = event.space.name;
-  }
-  
-  console.log("User message: " + text);
-  console.log("Space name: " + spaceName);
-  
-  if (!text || text.trim() === "") {
-    return { "text": "Please provide a command." };
-  }
-  
-  // Call the agent instead of hardcoded branches
-  console.log("Checking session...");
-  var userProperties = PropertiesService.getUserProperties();
-  var sessionId = userProperties.getProperty('sessionId_v2');
-  
-  if (!sessionId) {
-    console.log("No session found, creating new session...");
-    sessionId = createSession();
-    if (sessionId) {
-      userProperties.setProperty('sessionId_v2', sessionId);
-      console.log("New session saved: " + sessionId);
-    }
-  } else {
-    console.log("Using existing session: " + sessionId);
-  }
-  
-  console.log("Querying agent...");
-  var responseText = queryReasoningEngine(text, sessionId);
-  
-  // Real agent thinking, no need to simulate delay
-  
-  // PUSH THE MESSAGE DIRECTLY VIA CHAT API
-  if (spaceName) {
-    try {
-      console.log("Attempting to push message to space...");
-      
-      Chat.Spaces.Messages.create({
-        "text": responseText
-      }, spaceName);
-      console.log("Message pushed successfully!");
-    } catch (e) {
-      console.error("Error pushing message: " + e.toString());
-    }
-  }
-  
-  // Return a dummy response to satisfy the execution
-  return { 
-    "actionResponse": { "type": "NEW_MESSAGE" },
-    "text": "I am processing your request..." 
+// Helper to construct standard Google Chat JSON message with Card
+function buildChatResponseJSON(text) {
+  return {
+    "cardsV2": [
+      {
+        "cardId": "mainCard",
+        "card": {
+          "header": {
+            "title": "Loan Supervisor Agent",
+            "subtitle": "Mortgage Processing Assistant"
+          },
+          "sections": [
+            {
+              "widgets": [
+                {
+                  "textParagraph": {
+                    "text": text
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
   };
 }
+
+function buildPlaceholderCard() {
+  return CardService.newCardBuilder()
+    .setHeader(CardService.newCardHeader()
+      .setTitle("Loan Supervisor")
+      .setSubtitle("Mortgage Assistant"))
+    .addSection(CardService.newCardSection()
+      .addWidget(CardService.newTextParagraph()
+        .setText("Processing request...")))
+    .build();
+}
+

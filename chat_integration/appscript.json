@@ -11,6 +11,13 @@
   },
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8",
+  "addOns": {
+    "common": {
+      "name": "Loan Supervisor",
+      "logoUrl": "https://fonts.gstatic.com/s/i/productlogos/chat/v8/web-64dp/logo_chat_color_2x_web_64dp.png"
+    },
+    "chat": {}
+  },
   "oauthScopes": [
     "https://www.googleapis.com/auth/chat.messages",
     "https://www.googleapis.com/auth/chat.messages.create",
