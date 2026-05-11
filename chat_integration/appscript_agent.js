@@ -1,3 +1,4 @@
+const ENABLE_MARKDOWN_FORMATTING = true; // Change to false to return agent's verbatim response instantly
 const version = "AGENT_V5 (Workspace Add-on with Chat Push and Native Card Return)";
 
 function doPost(e) {
@@ -160,20 +161,20 @@ function queryReasoningEngine(queryText, sessionId) {
     
     var formattedFinalResponse = convertTableToText(finalResponse);
     
+    var formattedThinking = formatMarkdownForChat(thinkingResponse);
+    var formattedFinal = formatMarkdownForChat(formattedFinalResponse);
+    
     var combinedResponse = "";
-    if (thinkingResponse && thinkingResponse.trim() !== "") {
-      combinedResponse += "*Thinking:*\n" + thinkingResponse + "\n";
-      if (formattedFinalResponse) {
-        combinedResponse += "*Final response:*\n" + formattedFinalResponse;
+    if (formattedThinking && formattedThinking.trim() !== "") {
+      combinedResponse += "*Thinking:*\n" + formattedThinking + "\n";
+      if (formattedFinal) {
+        combinedResponse += "*Final response:*\n" + formattedFinal;
       }
     } else {
-      if (formattedFinalResponse) {
-        combinedResponse += formattedFinalResponse;
+      if (formattedFinal) {
+        combinedResponse += formattedFinal;
       }
     }
-    
-    // Convert markdown links [Text](URL) to Google Chat format <URL|Text>
-    combinedResponse = combinedResponse.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<$2|$1>');
     
     console.log("Full parsed response from stream: " + combinedResponse);
     return combinedResponse || "No text content returned from stream.";
@@ -306,5 +307,112 @@ function buildPlaceholderCard() {
       .addWidget(CardService.newTextParagraph()
         .setText("Processing request...")))
     .build();
+}
+
+/**
+ * Formats standard Markdown strings into Google Chat markup format.
+ * Version: FORMATTER_V2
+ */
+function formatMarkdownForChat(text) {
+  if (!text) return "";
+  
+  // --- Global Rollback Toggle ---
+  // Set to false to completely disable markdown translation and return verbatim responses.
+  if (!ENABLE_MARKDOWN_FORMATTING) {
+    return text;
+  }
+  
+  try {
+    // A. Clean up HTML break tags to newlines
+    text = text.replace(/<br>\s*-\s*/gi, '\n• ');
+    text = text.replace(/<br>/gi, '\n');
+
+    // B. Strip bracketed annotations ([Source: ...], [Info: ...])
+    text = text.replace(/\s*\[Source:\s*[^\]]+\]/g, '');
+    text = text.replace(/\s*\[Info:\s*[^\]]+\]/g, '');
+
+    // C. Format decisions beautifully
+    text = text.replace(/-\+\s*NEEDS HUMAN REVIEW\s*\+-/gi, '*⚠️ NEEDS HUMAN REVIEW*');
+    text = text.replace(/-\+\s*APPROVED\s*\+-/gi, '*✅ APPROVED*');
+    text = text.replace(/-\+\s*REJECTED\s*\+-/gi, '*❌ REJECTED*');
+
+    // D. Convert Markdown Tables to clean vertical lists
+    var lines = text.split("\n");
+    var inTable = false;
+    var headers = [];
+    var processedLines = [];
+    
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      
+      if (line.indexOf("|") === 0 && line.lastIndexOf("|") === line.length - 1) {
+        var cells = line.split("|").map(function(c) { return c.trim(); }).filter(function(c, idx, arr) {
+          return idx > 0 && idx < arr.length - 1;
+        });
+        
+        var isSeparator = cells.every(function(c) { return /^:?-+:?$/.test(c); });
+        if (isSeparator) {
+          continue;
+        }
+        
+        if (!inTable) {
+          inTable = true;
+          headers = cells;
+          processedLines.push(""); // Empty line
+          processedLines.push("*Applications:*");
+        } else {
+          var rowItems = [];
+          for (var j = 0; j < cells.length; j++) {
+            var headerName = headers[j] || "Field";
+            var value = cells[j] || "";
+            rowItems.push("*" + headerName + "*: " + value);
+          }
+          processedLines.push("• " + rowItems.join(" | "));
+        }
+      } else {
+        if (inTable) {
+          inTable = false;
+        }
+        processedLines.push(lines[i]);
+      }
+    }
+    text = processedLines.join("\n");
+
+    // E. Line-by-line formatting
+    var lines2 = text.split("\n");
+    var formattedLines = lines2.map(function(line) {
+      // 1. Convert Headers (e.g., ### Header) to Bold
+      line = line.replace(/^#+\s+(.+)$/g, '*$1*');
+      
+      // 2. Convert Horizontal Rule
+      if (line.trim() === "---") {
+        return "────────────────────────";
+      }
+      
+      // 3. Convert Bullet Points
+      line = line.replace(/^\s*[-*+]\s+(.+)$/g, '• $1');
+      
+      return line;
+    });
+    
+    text = formattedLines.join("\n");
+    
+    // F. Convert Bold (**text** to *text*)
+    text = text.replace(/\*\*([^*]+)\*\*/g, '*$1*');
+    
+    // G. Convert Italics (*text* to _text_)
+    text = text.replace(/\*([^*_]+)\*/g, '_$1_');
+    
+    // H. Convert Strikethrough (~~text~~ to ~text~)
+    text = text.replace(/~~([^~]+)~~/g, '~$1~');
+    
+    // I. Convert Markdown Links ([Text](URL) to <URL|Text>)
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<$2|$1>');
+    
+    return text;
+  } catch (e) {
+    console.error("Error formatting markdown for Chat: " + e.toString());
+    return text;
+  }
 }
 
